@@ -11,9 +11,9 @@ const enrollCourse = async (studentId, courseId, batchId = null) => {
     course: courseId,
   });
 
-  if (!enrollment) {
-    // Inverted logic bug: throws error when NOT enrolled
-    throw new Error("Already enrolled in this course");
+  // If already enrolled, return the existing enrollment
+  if (enrollment) {
+    return enrollment;
   }
 
   // Create new enrollment
