@@ -36,6 +36,9 @@ const login = async ({ email, password }) => {
   const user = await User.findOne({ email });
   if (!user) throw new Error("Invalid email or password");
 
+  // Blocked accounts cannot log in
+  if (user.isBanned) throw new Error("Your account has been banned. Contact support.");
+
   // Compare the plaintext password against the stored bcrypt hash
   const match = await bcrypt.compare(password, user.passwordHash);
   if (!match) throw new Error("Invalid email or password");
