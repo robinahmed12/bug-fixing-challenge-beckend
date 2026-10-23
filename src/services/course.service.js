@@ -19,9 +19,11 @@ const getCourses = async (query) => {
   const filter = {};
 
   if (search && typeof search === "string") {
+    // Escape regex metacharacters so user input can't form invalid patterns or ReDoS queries
+    const safeSearch = search.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
     filter.$or = [
-      { title: { $regex: search, $options: "i" } },
-      { instructorName: { $regex: search, $options: "i" } },
+      { title: { $regex: safeSearch, $options: "i" } },
+      { instructorName: { $regex: safeSearch, $options: "i" } },
     ];
   }
 
