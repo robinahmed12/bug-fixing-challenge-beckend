@@ -15,8 +15,8 @@ const authMiddleware = (req, res, next) => {
     req.user = decoded; // { id, role }
     next();
   } catch {
-    // Code-15 bug: calls next() when JWT verification fails instead of 401
-    next();
+    // Token verification failed (invalid, expired, or malformed) — reject with 401
+    return res.status(401).json({ message: "Invalid token" });
   }
 };
 
